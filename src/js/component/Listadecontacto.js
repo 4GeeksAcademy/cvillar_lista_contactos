@@ -1,9 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { Context } from '../store/appContext';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import '../../styles/card.css';  // Importa el archivo CSS
+import contactImage from '../../img/imagen random.jpeg';  // Importa la imagen
 
 const Listadecontacto = () => {
-  const { store, actions } = useContext(Context); // Obtener store y actions del contexto
+  const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,20 +15,35 @@ const Listadecontacto = () => {
   }, []);
 
   return (
-    <div>
+    <div className="contact-list">
       <h1>Lista de Contactos</h1>
-      <button onClick={() => navigate('/create')}>Crear Nuevo Contacto</button>
+      <button className="create-button" onClick={() => navigate('/create')}>
+        Crear Nuevo Contacto
+      </button>
       <div id="contactsList">
-        {/* Verifica que contacts es un array antes de usar .map() */}
         {Array.isArray(store.contacts) && store.contacts.length > 0 ? (
           store.contacts.map(contact => (
-            <div key={contact.id}>
-              <p><strong>{contact.name}</strong></p> {/* Cambiado a contact.name */}
-              <p>Email: {contact.email}</p>
-              <p>Teléfono: {contact.phone}</p>
-              <p>Dirección: {contact.address}</p>
-              <button onClick={() => navigate(`/edit/${contact.id}`)}>Editar</button>
-              <button onClick={() => actions.deleteContact(contact.id)}>Eliminar</button>
+            <div className="contact-card" key={contact.id}>
+              {/* Imagen del contacto */}
+              <img src={contactImage} alt="Contacto" />
+              
+              {/* Información del contacto */}
+              <div className="contact-info">
+                <p><strong>{contact.name}</strong></p>
+                <p>Email: {contact.email}</p>
+                <p>Teléfono: {contact.phone}</p>
+                <p>Dirección: {contact.address}</p>
+              </div>
+
+              {/* Acciones (Editar y Eliminar) */}
+              <div className="contact-actions">
+                <button className="edit-button" onClick={() => navigate(`/edit/${contact.id}`)}>
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button className="delete-button" onClick={() => actions.deleteContact(contact.id)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
             </div>
           ))
         ) : (
