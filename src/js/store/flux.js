@@ -12,13 +12,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (response.ok) {
             const data = await response.json();
             
-            console.log('Datos recibidos de la API:', data); // Log para ver la estructura
+            console.log('Datos recibidos de la API:', data);
       
-            // Verifica si es un array o si está dentro de una propiedad
             if (Array.isArray(data)) {
               setStore({ contacts: data });
             } else if (data.contacts) {
-              // Si los contactos están dentro de una propiedad
               setStore({ contacts: data.contacts });
             } else {
               console.error('Error: La API no devolvió un array ni una propiedad contacts');
@@ -32,42 +30,61 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error('Error al obtener los contactos:', error);
         }
       },
+      
       updateContact: async (contactId, updatedContact) => {
-    try {
-        const response = await fetch(`${API_URL}/${contactId}`, {
-            method: 'PUT', // O 'PATCH' dependiendo de cómo quieras implementar la actualización
+        try {
+          const response = await fetch(`${API_URL}/${contactId}`, {
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedContact)
-        });
+          });
 
-        if (!response.ok) {
+          if (!response.ok) {
             const errorData = await response.json();
             console.error('Error al actualizar el contacto:', errorData.detail);
-        } else {
+          } else {
             getActions().getContacts(); // Refresca la lista de contactos
+          }
+        } catch (error) {
+          console.error('Error al actualizar el contacto:', error);
         }
-    } catch (error) {
-        console.error('Error al actualizar el contacto:', error);
-    }
-},
+      },
+      
       createContact: async (newContact) => {
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newContact)  // Asegúrate de que se envíe el objeto correcto
-            });
+          const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newContact)
+          });
     
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Error al crear el contacto:', errorData.detail || errorData.message);
-            } else {
-                getActions().getContacts(); // Refresca la lista de contactos
-            }
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Error al crear el contacto:', errorData.detail || errorData.message);
+          } else {
+            getActions().getContacts(); // Refresca la lista de contactos
+          }
         } catch (error) {
-            console.error('Error al crear el contacto:', error);
+          console.error('Error al crear el contacto:', error);
         }
-    }
+      },
+      
+      deleteContact: async (contactId) => {
+        try {
+          const response = await fetch(`${API_URL}/${contactId}`, {
+            method: 'DELETE'
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Error al eliminar el contacto:', errorData.detail);
+          } else {
+            getActions().getContacts(); // Refresca la lista de contactos después de eliminar
+          }
+        } catch (error) {
+          console.error('Error al eliminar el contacto:', error);
+        }
+      }
     }
   };
 };
