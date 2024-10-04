@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CrearContacto = () => {
   const [contact, setContact] = useState({
-    full_name: '',
+    name: '',
     email: '',
     phone: '',
     address: ''
@@ -20,16 +20,14 @@ const CrearContacto = () => {
   // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    console.log('Datos a enviar:', contact); // Verifica los datos del formulario
     try {
-      // Usa la acción de Flux para crear un contacto nuevo
-      await actions.createContact(contact); 
-      // Redirige a la lista de contactos después de crear el contacto
-      navigate('/');
+       await actions.createContact(contact);
+       navigate('/');
     } catch (error) {
-      console.error('Error al crear el contacto:', error);
+       console.error('Error al crear el contacto:', error);
     }
-  };
+ };
 
   return (
     <div>
@@ -37,9 +35,9 @@ const CrearContacto = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          id="full_name"
+          id="name"
           placeholder="Nombre completo"
-          value={contact.full_name}
+          value={contact.name}
           onChange={handleChange}
           required
         />

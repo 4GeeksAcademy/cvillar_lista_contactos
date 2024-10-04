@@ -19,7 +19,7 @@ const Listadecontacto = () => {
         {Array.isArray(store.contacts) && store.contacts.length > 0 ? (
           store.contacts.map(contact => (
             <div key={contact.id}>
-              <p><strong>{contact.full_name}</strong></p>
+              <p><strong>{contact.name}</strong></p> {/* Cambiado a contact.name */}
               <p>Email: {contact.email}</p>
               <p>Teléfono: {contact.phone}</p>
               <p>Dirección: {contact.address}</p>
