@@ -20,7 +20,7 @@ const CrearContacto = () => {
   // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos a enviar:', contact); // Verifica los datos del formulario
+    
     try {
        await actions.createContact(contact);
        navigate('/');

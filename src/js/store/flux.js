@@ -12,8 +12,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (response.ok) {
             const data = await response.json();
             
-            console.log('Datos recibidos de la API:', data);
-      
+           
             if (Array.isArray(data)) {
               setStore({ contacts: data });
             } else if (data.contacts) {
